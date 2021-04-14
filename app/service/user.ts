@@ -13,6 +13,7 @@ export default class user extends Service {
     console.log('===========经过复杂的处理=============');
     const { ctx } = this;
     const url = 'https://hooks.slack.com/services/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';
+    ctx.throw(400, '服务异常', { code: -1001 });
     const result = await ctx.curl(url, {
       method: 'POST',
       contentType: 'json',
@@ -21,7 +22,7 @@ export default class user extends Service {
     return { id, name, result };
   }
 
-  public async updadteUser(params:any) {
+  public async updateUser(params:any) {
     console.log('===========经过复杂的处理=============');
     return params;
   }

@@ -5,6 +5,6 @@ export default (app: Application) => {
 
   router.get('/', controller.home.index);
   router.get('/api/user/:id', controller.user.getUserInfo);
-  router.post('/api/user/updateUser', controller.user.updadteUser);
+  router.post('/api/user/updateUser', controller.user.updateUser);
   router.post('/api/user/addUser', controller.user.addUser);
 };
