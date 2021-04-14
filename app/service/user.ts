@@ -3,9 +3,7 @@ export default class user extends Service {
 
 
   public async addUser(params:any) {
-    console.log('===========params===================');
-    console.log(params);
-    console.log('===========params===================');
+    console.log('===========经过复杂的处理=============');
     return params;
   }
 

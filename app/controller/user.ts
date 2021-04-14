@@ -2,10 +2,9 @@ import { Controller } from 'egg';
 
 // 定义创建接口的请求参数规则
 const createRule = {
-  accesstoken: 'string',
-  title: 'string',
-  tab: { type: 'enum', values: [ 'ask', 'share', 'job' ], required: false },
-  content: 'string',
+  id: { type: 'string', required: true },
+  name: 'string',
+  tab: { type: 'enum', values: [ 'enum1', 'enum2', 'enum3' ], required: true },
 };
 export default class UserController extends Controller {
 
