@@ -20,5 +20,17 @@
 2.5. header
 2.6. Cookie
 2.7. Session
-
-
+### 1.3：Service
+1：[this.ctx.curl 发起网络调用。](https://www.cnblogs.com/antyhouse/p/13255494.html)
+param   | ...
+---|:--:|
+method  | 请求方法，默认为GET。可以是GET，POST，DELETE或PUT
+data	| 要发送的数据。将自动进行字符串化
+dataType| 字符串-响应数据的类型。可能是text或json
+headers	| 请求标头
+timeout	| 请求超时
+auth	| username:password在HTTP基本授权中使用
+gzip	| 让您在请求连接时获取res对象，默认为false
+nestedQuerystring |	urllib默认使用querystring       | 对不支持嵌套对象的表单数据进行字符串化，通过将此选项设置为true，将使用qs而不是querystring支持嵌套对象
+**2： this.ctx.service.otherService 调用其他 Service**
+**3：this.ctx.db 发起数据库调用等， db 可能是其他插件提前挂载到 app 上的模块**
