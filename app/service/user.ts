@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-export default class user extends Service {
+export default class UserService extends Service {
   // this.ctx.curl 发起网络调用。
   // this.ctx.service.otherService 调用其他 Service。
   // this.ctx.db 发起数据库调用等， db 可能是其他插件提前挂载到 app 上的模块。
@@ -13,7 +13,7 @@ export default class user extends Service {
     console.log('===========经过复杂的处理=============');
     const { ctx } = this;
     const url = 'https://hooks.slack.com/services/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';
-    ctx.throw(400, '服务异常', { code: -1001 });
+    // ctx.throw(400, '服务异常', { code: -1001 });
     const result = await ctx.curl(url, {
       method: 'POST',
       contentType: 'json',
@@ -39,6 +39,49 @@ export default class user extends Service {
     console.log('==========context 方法扩展==============');
     console.log('===========经过复杂的处理=============');
     return params;
+  }
+
+  async create(params) {
+    const { ctx } = this;
+    const user = await ctx.model.User.create(params);
+    return user;
+  }
+
+  async destroy(params) {
+    const ctx = this.ctx;
+    const { id } = params;
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      return '未找到该user';
+    }
+    await user.destroy();
+    return 'success';
+  }
+
+  async update(params) {
+    const ctx = this.ctx;
+    const { id, name, age } = params;
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      return '未找到该user';
+    }
+    await user.update({ name, age });
+    return user;
+  }
+
+  async index(query) {
+    const { ctx } = this;
+    const result = await ctx.model.User.findAll(query);
+    return result;
+  }
+
+  async findByPk(id) {
+    const { ctx } = this;
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      return '未找到该user';
+    }
+    return user;
   }
 
 }
