@@ -23,6 +23,20 @@ export default class user extends Service {
   }
 
   public async updateUser(params:any) {
+    const { app, ctx } = this;
+    console.log('==========Application 属性扩展==============');
+    console.log(app.attribute);
+    console.log('==========Application 属性扩展==============');
+    console.log('==========Application 方法扩展==============');
+    app.appFun();
+    console.log('==========Application 方法扩展==============');
+
+    console.log('==========context 属性扩展==============');
+    console.log(ctx.attribute);
+    console.log('==========context 属性扩展==============');
+    console.log('==========context 方法扩展==============');
+    ctx.contextFun();
+    console.log('==========context 方法扩展==============');
     console.log('===========经过复杂的处理=============');
     return params;
   }
