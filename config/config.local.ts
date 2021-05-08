@@ -11,7 +11,7 @@ export default () => {
     // 用户名
     user: 'root',
     // 密码
-    password: '11111111',
+    password: '123456',
     // 数据库名
     database: 'fe_monitor_db',
   };
