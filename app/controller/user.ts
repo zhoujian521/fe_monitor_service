@@ -9,9 +9,8 @@ export default class UserController extends Controller {
     // 1.1: 校验参数
     // 定义创建接口的请求参数规则
     const createRule = {
-      id: { type: 'string', required: true },
-      name: 'string',
-      tab: { type: 'enum', values: [ 'enum1', 'enum2', 'enum3' ], required: false },
+      userName: { type: 'string', required: true },
+      passWord:{ type: 'string', required: true },
     };
     ctx.validate(createRule);
     try {
@@ -22,11 +21,10 @@ export default class UserController extends Controller {
     } catch (error) {
       const { code, message } = error;
       console.log('validate error ==>' + code, message);
-      // return;
     }
     // 2: 组装参数
-    const { id: userId, name = '' } = ctx.request.body;
-    const params = { userId, name };
+    const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
+    const params = { user_name, pass_word, token:'1234567890qwertyuiop', usertoken:'zxcvbnmdfghjkqwertyuio0987' };
     // 3: 调用 service 进行业务处理
     const result = await ctx.service.user.addUser(params);
     // 4: 设置响应内容和响应状态码
@@ -39,28 +37,27 @@ export default class UserController extends Controller {
 
   public async updateUser() {
     const { ctx } = this;
-    const { id, name = '' } = ctx.request.body;
-    ctx.body = await ctx.service.user.updateUser({ id, name });
+    const { id, userName:user_name = '' } = ctx.request.body;
+    ctx.body = await ctx.service.user.updateUser({ id, user_name });
   }
 
   public async getUserInfo() {
     const { ctx } = this;
-    const { id = 0 } = ctx.params;
-    const { name = '' } = ctx.query;
-    ctx.body = await ctx.service.user.getUserInfo(id, name);
+    const { id } = ctx.query;
+    ctx.body = await ctx.service.user.getUserInfo(id);
   }
 
 
   async create() {
     const ctx = this.ctx;
     const rules = {
-      name: { type: 'string', required: true },
-      age: { type: 'string', required: true },
+      userName: { type: 'string', required: true },
+      passWord: { type: 'string', required: true },
     };
     ctx.validate(rules, ctx.request.body);
 
-    const { name, age } = ctx.request.body;
-    const user = await ctx.service.user.create({ name, age });
+    const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
+    const user = await ctx.service.user.create({ user_name, pass_word, token:'1234567890qwertyuiop', usertoken:'zxcvbnmdfghjkqwertyuio0987' });
     ctx.body = { code: 0, msg: 'success', data: user };
   }
 
@@ -80,13 +77,13 @@ export default class UserController extends Controller {
     const ctx = this.ctx;
     const rules = {
       id: { type: 'string', required: true },
-      name: { type: 'string', required: false },
-      age: { type: 'string', required: false },
+      userName: { type: 'string', required: false },
+      passWord: { type: 'string', required: false },
     };
     ctx.validate(rules, ctx.request.body);
 
-    const { id, name, age } = ctx.request.body;
-    const user = await ctx.service.user.update({ id, name, age });
+    const { id, userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
+    const user = await ctx.service.user.update({ id, user_name, pass_word });
     ctx.body = { code: 0, msg: 'success', data: user };
   }
 
@@ -107,11 +104,10 @@ export default class UserController extends Controller {
 
   async show() {
     const ctx = this.ctx;
-    const rules = {
-      id: { type: 'number', required: true },
-    };
-    ctx.validate(rules, ctx.query);
-
+    // const rules = {
+    //   id: { type: 'number', required: true },
+    // };
+    // ctx.validate(rules, ctx.query);
     const { id } = ctx.query;
     const data = await ctx.service.user.findByPk(id);
     ctx.body = { code: 0, msg: 'success', data };

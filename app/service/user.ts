@@ -5,21 +5,27 @@ export default class UserService extends Service {
   // this.ctx.db 发起数据库调用等， db 可能是其他插件提前挂载到 app 上的模块。
 
   public async addUser(params:any) {
-    console.log('===========经过复杂的处理=============');
-    return params;
+    const { ctx } = this;
+    const user = await ctx.model.User.create(params);
+    return user;
   }
 
-  public async getUserInfo(id: string, name:string) {
+  public async getUserInfo(id: string) {
     console.log('===========经过复杂的处理=============');
     const { ctx } = this;
     const url = 'https://hooks.slack.com/services/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';
     // ctx.throw(400, '服务异常', { code: -1001 });
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      return '未找到该user';
+    }
+
     const result = await ctx.curl(url, {
       method: 'POST',
       contentType: 'json',
       data: { text: 'Only test' },
     });
-    return { id, name, result };
+    return { user, result };
   }
 
   public async updateUser(params:any) {
@@ -38,7 +44,13 @@ export default class UserService extends Service {
     ctx.contextFun();
     console.log('==========context 方法扩展==============');
     console.log('===========经过复杂的处理=============');
-    return params;
+    const { id, user_name} = params;
+    const user = await ctx.model.User.findByPk(id);
+    if (!user) {
+      return '未找到该user';
+    }
+    await user.update({ user_name });
+    return user;
   }
 
   async create(params) {
@@ -60,12 +72,12 @@ export default class UserService extends Service {
 
   async update(params) {
     const ctx = this.ctx;
-    const { id, name, age } = params;
+    const { id, user_name, pass_word } = params;
     const user = await ctx.model.User.findByPk(id);
     if (!user) {
       return '未找到该user';
     }
-    await user.update({ name, age });
+    await user.update({ user_name, pass_word });
     return user;
   }
 
