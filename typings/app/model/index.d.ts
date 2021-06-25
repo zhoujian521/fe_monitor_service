@@ -2,16 +2,14 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportEmail from '../../../app/model/email';
-import ExportIp from '../../../app/model/ip';
 import ExportSystem from '../../../app/model/system';
 import ExportUser from '../../../app/model/user';
+import ExportUserSystem from '../../../app/model/user_system';
 
 declare module 'egg' {
   interface IModel {
-    Email: ReturnType<typeof ExportEmail>;
-    Ip: ReturnType<typeof ExportIp>;
     System: ReturnType<typeof ExportSystem>;
     User: ReturnType<typeof ExportUser>;
+    UserSystem: ReturnType<typeof ExportUserSystem>;
   }
 }

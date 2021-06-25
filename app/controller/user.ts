@@ -24,7 +24,7 @@ export default class UserController extends Controller {
     }
     // 2: 组装参数
     const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
-    const params = { user_name, pass_word, token:'1234567890qwertyuiop', usertoken:'zxcvbnmdfghjkqwertyuio0987' };
+    const params = { account:user_name, password_md5:pass_word, token:'1234567890qwertyuiop' };
     // 3: 调用 service 进行业务处理
     const result = await ctx.service.user.addUser(params);
     // 4: 设置响应内容和响应状态码
@@ -57,7 +57,7 @@ export default class UserController extends Controller {
     ctx.validate(rules, ctx.request.body);
 
     const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
-    const user = await ctx.service.user.create({ user_name, pass_word, token:'1234567890qwertyuiop', usertoken:'zxcvbnmdfghjkqwertyuio0987' });
+    const user = await ctx.service.user.create({ account:user_name, password_md5:pass_word, token:'1234567890qwertyuiop' });
     ctx.body = { code: 0, msg: 'success', data: user };
   }
 

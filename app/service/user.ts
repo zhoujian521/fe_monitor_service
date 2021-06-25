@@ -49,7 +49,7 @@ export default class UserService extends Service {
     if (!user) {
       return '未找到该user';
     }
-    await user.update({ user_name });
+    await user.update({ account:user_name });
     return user;
   }
 
