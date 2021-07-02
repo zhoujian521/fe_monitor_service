@@ -44,12 +44,12 @@ export default class UserService extends Service {
     ctx.contextFun();
     console.log('==========context 方法扩展==============');
     console.log('===========经过复杂的处理=============');
-    const { id, user_name} = params;
+    const { id, nickname = ''} = params;
     const user = await ctx.model.User.findByPk(id);
     if (!user) {
       return '未找到该user';
     }
-    await user.update({ account:user_name });
+    await user.update({ nickname });
     return user;
   }
 
@@ -72,21 +72,15 @@ export default class UserService extends Service {
 
   async update(params) {
     const ctx = this.ctx;
-    const { id, user_name, pass_word } = params;
+    const { id, login_name, login_pwd } = params;
     const user = await ctx.model.User.findByPk(id);
     if (!user) {
       return '未找到该user';
     }
-    await user.update({ user_name, pass_word });
+    await user.update({ login_name, login_pwd });
     return user;
   }
-
-  async index(query) {
-    const { ctx } = this;
-    const result = await ctx.model.User.findAll(query);
-    return result;
-  }
-
+  
   async findByPk(id) {
     const { ctx } = this;
     const user = await ctx.model.User.findByPk(id);
@@ -94,6 +88,12 @@ export default class UserService extends Service {
       return '未找到该user';
     }
     return user;
+  }
+
+  async index(query) {
+    const { ctx } = this;
+    const result = await ctx.model.User.findAll(query);
+    return result;
   }
 
 }

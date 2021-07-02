@@ -2,14 +2,20 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportSystem from '../../../app/model/system';
+import ExportCustomData from '../../../app/model/custom_data';
+import ExportProject from '../../../app/model/project';
+import ExportStatisticsDetail from '../../../app/model/statistics_detail';
 import ExportUser from '../../../app/model/user';
-import ExportUserSystem from '../../../app/model/user_system';
+import ExportUserProject from '../../../app/model/user_project';
+import ExportWebResStatistic from '../../../app/model/web_res_statistic';
 
 declare module 'egg' {
   interface IModel {
-    System: ReturnType<typeof ExportSystem>;
+    CustomData: ReturnType<typeof ExportCustomData>;
+    Project: ReturnType<typeof ExportProject>;
+    StatisticsDetail: ReturnType<typeof ExportStatisticsDetail>;
     User: ReturnType<typeof ExportUser>;
-    UserSystem: ReturnType<typeof ExportUserSystem>;
+    UserProject: ReturnType<typeof ExportUserProject>;
+    WebResStatistic: ReturnType<typeof ExportWebResStatistic>;
   }
 }

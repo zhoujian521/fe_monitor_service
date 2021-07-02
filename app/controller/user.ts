@@ -9,8 +9,8 @@ export default class UserController extends Controller {
     // 1.1: 校验参数
     // 定义创建接口的请求参数规则
     const createRule = {
-      userName: { type: 'string', required: true },
-      passWord:{ type: 'string', required: true },
+      login_name: { type: 'string', required: true },
+      login_pwd:{ type: 'string', required: true },
     };
     ctx.validate(createRule);
     try {
@@ -23,8 +23,7 @@ export default class UserController extends Controller {
       console.log('validate error ==>' + code, message);
     }
     // 2: 组装参数
-    const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
-    const params = { account:user_name, password_md5:pass_word, token:'1234567890qwertyuiop' };
+    const params = ctx.request.body;
     // 3: 调用 service 进行业务处理
     const result = await ctx.service.user.addUser(params);
     // 4: 设置响应内容和响应状态码
@@ -37,8 +36,7 @@ export default class UserController extends Controller {
 
   public async updateUser() {
     const { ctx } = this;
-    const { id, userName:user_name = '' } = ctx.request.body;
-    ctx.body = await ctx.service.user.updateUser({ id, user_name });
+    ctx.body = await ctx.service.user.updateUser(ctx.request.body);
   }
 
   public async getUserInfo() {
@@ -47,17 +45,15 @@ export default class UserController extends Controller {
     ctx.body = await ctx.service.user.getUserInfo(id);
   }
 
-
   async create() {
     const ctx = this.ctx;
     const rules = {
-      userName: { type: 'string', required: true },
-      passWord: { type: 'string', required: true },
+      login_name: { type: 'string', required: true },
+      login_pwd:{ type: 'string', required: true },
     };
     ctx.validate(rules, ctx.request.body);
 
-    const { userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
-    const user = await ctx.service.user.create({ account:user_name, password_md5:pass_word, token:'1234567890qwertyuiop' });
+    const user = await ctx.service.user.create(ctx.request.body);
     ctx.body = { code: 0, msg: 'success', data: user };
   }
 
@@ -77,17 +73,27 @@ export default class UserController extends Controller {
     const ctx = this.ctx;
     const rules = {
       id: { type: 'string', required: true },
-      userName: { type: 'string', required: false },
-      passWord: { type: 'string', required: false },
+      login_name: { type: 'string', required: false },
+      login_pwd: { type: 'string', required: false },
     };
     ctx.validate(rules, ctx.request.body);
 
-    const { id, userName:user_name = '', passWord:pass_word = '' } = ctx.request.body;
-    const user = await ctx.service.user.update({ id, user_name, pass_word });
+    const user = await ctx.service.user.update(ctx.request.body);
     ctx.body = { code: 0, msg: 'success', data: user };
   }
 
-  async index() {
+  async searchById() {
+    const ctx = this.ctx;
+    const rules = {
+      id: { type: 'string', required: true },
+    };
+    ctx.validate(rules, ctx.query);
+    const { id } = ctx.query;
+    const data = await ctx.service.user.findByPk(id);
+    ctx.body = { code: 0, msg: 'success', data };
+  }
+
+  async searchAll() {
     const { ctx } = this;
     const { helper } = ctx;
     const { limit, offset } = ctx.query;
@@ -99,17 +105,6 @@ export default class UserController extends Controller {
     ctx.validate(rules, query);
 
     const data = await ctx.service.user.index(query);
-    ctx.body = { code: 0, msg: 'success', data };
-  }
-
-  async show() {
-    const ctx = this.ctx;
-    // const rules = {
-    //   id: { type: 'number', required: true },
-    // };
-    // ctx.validate(rules, ctx.query);
-    const { id } = ctx.query;
-    const data = await ctx.service.user.findByPk(id);
     ctx.body = { code: 0, msg: 'success', data };
   }
 }
